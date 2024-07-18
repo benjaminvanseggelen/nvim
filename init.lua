@@ -161,6 +161,10 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
+-- Disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
@@ -647,6 +651,19 @@ require("lazy").setup({
 		},
 		config = function()
 			vim.keymap.set("n", "<C-B>", "<Cmd>Neotree toggle<CR>")
+			require("neo-tree").setup({
+				close_if_last_window = true,
+				window = {
+					position = "left",
+					width = 30,
+				},
+				filesystem = {
+					follow_current_file = {
+						enabled = true,
+					},
+					hijack_netrw_behavior = "open_default",
+				},
+			})
 		end,
 	},
 	{ -- Autoformat
@@ -809,6 +826,10 @@ require("lazy").setup({
 		config = function()
 			require("tokyonight").setup({
 				transparent = true,
+				on_highlights = function(hl, c)
+					hl.NeoTreeNormal = { bg = "NONE" }
+					hl.NeoTreeNormalNC = { bg = "NONE" }
+				end,
 			})
 		end,
 		priority = 1000, -- Make sure to load this before all the other start plugins.
